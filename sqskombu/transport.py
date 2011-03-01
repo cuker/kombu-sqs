@@ -36,21 +36,22 @@ class Channel(virtual.Channel):
         q = self.get_or_create_queue(queue)
         m = Message()
         m.set_body(serialize(message))
-        q.write(m)
+        assert q.write(m)
 
     def _get(self, queue):
-        if hasattr(self, '_last_get'):
-            time_passed = time.time() - self._last_get
-            time_to_sleep = THROTTLE - time_passed
-            if time_to_sleep > 0:
-                time.sleep(time_to_sleep)
-        self._last_get = time.time()
         q = self.get_or_create_queue(queue)
         m = q.read()
         if m:
             msg = deserialize(m.get_body())
             q.delete_message(m)
             return msg
+        else:
+            if getattr(self, '_last_get', None):
+                time_passed = time.time() - self._last_get
+                time_to_sleep = THROTTLE - time_passed
+                if time_to_sleep > 0:
+                    time.sleep(time_to_sleep)
+            self._last_get = time.time()
         raise Empty()
 
     def _size(self, queue):
