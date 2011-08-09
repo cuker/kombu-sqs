@@ -1,5 +1,5 @@
 """Kombu transport using Amazon SQS."""
-VERSION = (0, 0, 1)
+VERSION = (0, 0, 2)
 __version__ = ".".join(map(str, VERSION))
 __author__ = "Jason Kraus"
 __contact__ = "zbyte64@gmail.com"
