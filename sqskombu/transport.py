@@ -20,7 +20,11 @@ class Channel(virtual.Channel):
         
         This function aims to map a non-standard name to one that is acceptable for sqs
         """
-        return queue.replace('.', '_')
+        name = queue.replace('.', '_')
+        prefix = self.transport_options.get("prefix")
+        if prefix:
+            name = prefix + name
+        return name
     
     def get_or_create_queue(self, queue):
         self.client #initial client if we don't have it
@@ -74,6 +78,10 @@ class Channel(virtual.Channel):
             self._client = self._open()
             self._queues = dict()
         return self._client
+    
+    @property
+    def transport_options(self):
+        return self.connection.client.transport_options
 
 class SQSTransport(virtual.Transport):
     Channel = Channel
