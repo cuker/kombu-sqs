@@ -9,7 +9,7 @@ import socket
 import time
 
 #TODO how to make this configurable?
-THROTTLE = 30 #only poll every 30 seconds
+THROTTLE = 0 #only poll every 30 seconds
 
 class Channel(virtual.Channel):
     def normalize_queue_name(self, queue):
