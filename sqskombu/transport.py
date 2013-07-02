@@ -86,6 +86,6 @@ class Channel(virtual.Channel):
 class SQSTransport(virtual.Transport):
     Channel = Channel
 
-    connection_errors = (socket.error)
+    connection_errors = (socket.error,)
     channel_errors = ()
 
