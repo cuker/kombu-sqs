@@ -21,6 +21,7 @@ class Channel(virtual.Channel):
         This function aims to map a non-standard name to one that is acceptable for sqs
         """
         name = queue.replace('.', '_')
+        name = name.replace('@', '_')
         prefix = self.transport_options.get("prefix")
         if prefix:
             name = prefix + name
